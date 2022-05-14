@@ -4,6 +4,3 @@ server:
 db:
   port: 3306
   type: mysql
-
-mailer:
-  key: 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

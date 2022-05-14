@@ -15,7 +15,6 @@ import { FileModule } from './file/file.module';
 import { PageModule } from './page/page.module';
 import { ContactModule } from './contact/contact.module';
 import { AuthModule } from './auth/auth.module';
-import { SlackModule } from './slack/slack.module';
 
 @Module({
   imports: [
@@ -39,7 +38,6 @@ import { SlackModule } from './slack/slack.module';
     PageModule,
     ContactModule,
     AuthModule,
-    SlackModule,
   ],
 })
 export class AppModule {}
