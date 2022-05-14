@@ -1,0 +1,5 @@
+db:
+  database: resume
+  username: root
+  synchronize: false
+  host: localhost
