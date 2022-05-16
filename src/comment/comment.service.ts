@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './comment.entity';
-import { Repository, getConnectionManager } from 'typeorm';
+import { Repository } from 'typeorm';
 import {
   IdDto,
   CreateCommentDto,
@@ -9,21 +9,19 @@ import {
   ApproveCommentDto,
   LimitOffsetDeletedApprovedDTO,
 } from '../global/dto';
-import { DefaultLimit, To, DefaultFrom } from '../global/constants';
+import { DefaultLimit, EmailJsUrl } from '../global/constants';
 import { NotFound } from '../global/error';
 import * as _ from 'lodash';
 import { AdminService } from '../admin/admin.service';
 import { ReferenceService } from '../reference/reference.service';
 import { VisitorService } from '../visitor/visitor.service';
-import { SendGridMailer } from '../utils/send-grid-mailer';
-import { Message } from '../global/type/message.mailer';
-import { JsonToHtml } from '../utils/json-to-html';
+import { EmailJsMessage } from '../global/type';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class CommentService {
   private entity: any = Comment;
   private relations: string[] = ['Admins', 'References', 'Visitors'];
-  private mailer: any = new SendGridMailer();
   constructor(
     @InjectRepository(Comment) private commentRepository: Repository<Comment>,
     private adminService: AdminService,
@@ -99,7 +97,14 @@ export class CommentService {
       console.log(e);
     }
     try {
-      await this.mailer.send(this.buildMessage(comment, 'Create'));
+      // await this.mailer.send(this.buildMessage(comment, 'Create'));
+      const message = this.buildMessage(comment, 'Create');
+      const response = await fetch(EmailJsUrl, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -111,7 +116,14 @@ export class CommentService {
     const comment = await this.showComment({ Id });
     if (!_.isEmpty(updates)) _.merge(comment, updates);
     try {
-      await this.mailer.send(this.buildMessage(comment, 'Update'));
+      // await this.mailer.send(this.buildMessage(comment, 'Update'));
+      const message = this.buildMessage(comment, 'Update');
+      const response = await fetch(EmailJsUrl, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -135,11 +147,18 @@ export class CommentService {
   }
 
   private buildMessage(comment: Comment, action: string) {
-    const message = new Message();
-    message.to = To;
-    message.from = DefaultFrom;
-    message.subject = `${action} Comment`;
-    message.html = JsonToHtml(comment);
+    const message = new EmailJsMessage();
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.service_id = process.env.EMAIL_JS_SERVICE_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.template_id = process.env.EMAIL_JS_COMMENT_TEMPLATE_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.user_id = process.env.EMAIL_JS_USER_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.template_params = {};
+    message.template_params['Action'] = `${action} Comment`;
+    message.template_params['Type'] = comment.Type;
+    message.template_params['Message'] = comment.Message;
     return message;
   }
 }

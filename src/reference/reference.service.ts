@@ -11,17 +11,17 @@ import {
 } from '../global/dto';
 import { NotFoundUUID } from '../global/error';
 import * as _ from 'lodash';
-import { DefaultLimit, To, DefaultFrom } from '../global/constants';
-import { Message } from '../global/type';
+import { DefaultLimit, EmailJsUrl } from '../global/constants';
+import { EmailJsMessage } from '../global/type';
 import { FormattedName } from '../utils/formatted-name';
-import { JsonToHtml } from '../utils/json-to-html';
-import { SendGridMailer } from '../utils/send-grid-mailer';
+import { FormattedAddress } from '../utils/formatted-address';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class ReferenceService {
   private entity: any = Reference;
   private relations: string[] = ['Phones', 'Emails', 'Comments'];
-  private mailer: any = new SendGridMailer();
+  // private mailer: any = new SendGridMailer();
 
   constructor(
     @InjectRepository(Reference)
@@ -65,7 +65,13 @@ export class ReferenceService {
       );
     }
     try {
-      await this.mailer.send(this.buildMessage(reference, 'Create'));
+			const message = this.buildMessage(reference, 'Create');
+			const response = await fetch(EmailJsUrl, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -84,7 +90,13 @@ export class ReferenceService {
       );
     }
     try {
-      await this.mailer.send(this.buildMessage(reference, 'Update'));
+			const message = this.buildMessage(reference, 'Update');
+      const response = await fetch(EmailJsUrl, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -111,13 +123,20 @@ export class ReferenceService {
   }
 
   private buildMessage(reference: Reference, action: string) {
-    const message = new Message();
-    message.to = To;
-    message.from = DefaultFrom;
-    message.subject = reference.Name
-      ? `${action} Reference: ${FormattedName(reference.Name)}`
-      : `${action} Reference`;
-    message.html = JsonToHtml(reference);
+    const message = new EmailJsMessage();
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.service_id = process.env.EMAIL_JS_SERVICE_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.template_id = process.env.EMAIL_JS_COMMENT_TEMPLATE_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.user_id = process.env.EMAIL_JS_USER_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.template_params = {};
+		message.template_params['Action'] = `${action} Reference`;
+		message.template_params['Name'] = FormattedName(reference.Name);
+    message.template_params['Address'] = FormattedAddress(reference.Address);
+		message.template_params['Title'] = reference.Title;
+		message.template_params['Company'] = reference.Company;
     return message;
   }
 }

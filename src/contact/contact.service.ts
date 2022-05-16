@@ -8,18 +8,17 @@ import {
   CreateContactDto,
   UpdateContactDto,
 } from '../global/dto';
-import { DefaultLimit, To, DefaultFrom } from '../global/constants';
+import { DefaultLimit, EmailJsUrl } from '../global/constants';
 import { NotFound } from '../global/error';
 import * as _ from 'lodash';
-import { SendGridMailer } from '../utils/send-grid-mailer';
-import { Message } from '../global/type';
+import { EmailJsMessage } from '../global/type';
 import { FormattedName } from '../utils/formatted-name';
-import { JsonToHtml } from '../utils/json-to-html';
+import { FormattedAddress } from '../utils/formatted-address';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class ContactService {
   private entity: any = Contact;
-  private mailer: any = new SendGridMailer();
   constructor(
     @InjectRepository(Contact) private contactRepository: Repository<Contact>,
   ) {}
@@ -47,7 +46,13 @@ export class ContactService {
     const contact = new Contact();
     _.merge(contact, createContactDto);
     try {
-      await this.mailer.send(this.buildMessage(contact, 'Create'));
+      const message = this.buildMessage(contact, 'Create');
+      const response = await fetch(EmailJsUrl, {
+        method: 'POST',
+        body: JSON.stringify(message),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -68,13 +73,24 @@ export class ContactService {
   }
 
   private buildMessage(contact: Contact, action: string) {
-    const message = new Message();
-    message.to = To;
-    message.from = DefaultFrom;
-    message.subject = contact.Name
-      ? `${action} Contact: ${FormattedName(contact.Name)}`
-      : `${action} Contact`;
-    message.html = JsonToHtml(contact);
+    const message = new EmailJsMessage();
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.service_id = process.env.EMAIL_JS_SERVICE_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.template_id = process.env.EMAIL_JS_CONTACT_TEMPLATE_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.user_id = process.env.EMAIL_JS_USER_ID;
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    message.template_params = {};
+    message.template_params['Subject'] = `${action} Contact: ${contact.Subject}`;
+    message.template_params['Name'] = FormattedName(contact.Name);
+    message.template_params['Address'] = FormattedAddress(contact.Address);
+    message.template_params['EmailType'] = contact.EmailType;
+    message.template_params['Email'] = contact.Email;
+    message.template_params['PhoneType'] = contact.PhoneType;
+    message.template_params['Phone'] = contact.Phone;
+    message.template_params['Preffered'] = contact.Preferred;
+    message.template_params['Message'] = contact.Message;
     return message;
   }
 }
