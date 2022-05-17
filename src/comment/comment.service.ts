@@ -151,7 +151,7 @@ export class CommentService {
     // eslint-disable-next-line @typescript-eslint/camelcase
     message.service_id = process.env.EMAIL_JS_SERVICE_ID;
     // eslint-disable-next-line @typescript-eslint/camelcase
-    message.template_id = process.env.EMAIL_JS_COMMENT_TEMPLATE_ID;
+    message.template_id = process.env.EMAIL_JS_CONTACT_TEMPLATE_ID;
     // eslint-disable-next-line @typescript-eslint/camelcase
     message.user_id = process.env.EMAIL_JS_USER_ID;
     // eslint-disable-next-line @typescript-eslint/camelcase

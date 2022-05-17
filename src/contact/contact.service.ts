@@ -82,7 +82,8 @@ export class ContactService {
     message.user_id = process.env.EMAIL_JS_USER_ID;
     // eslint-disable-next-line @typescript-eslint/camelcase
     message.template_params = {};
-    message.template_params['Subject'] = `${action} Contact: ${contact.Subject}`;
+		message.template_params['Action'] = `${action} Contact`;
+    message.template_params['Subject'] = contact.Subject;
     message.template_params['Name'] = FormattedName(contact.Name);
     message.template_params['Address'] = FormattedAddress(contact.Address);
     message.template_params['EmailType'] = contact.EmailType;
