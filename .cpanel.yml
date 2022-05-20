@@ -2,7 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/jeffross/resume-gql.jeff-rossi.com
-#    - bin/npm run build
-#    - bin/cp -R dist/* $DEPLOYPATH
-    - bin/cp ormconfig.js $DEPLOYPATH
-#    - bin/rm -rf dist/*
+    - bin/cp -R . $DEPLOYPATH
+    - cd $DEPLOYPATH
+    - bin/sh npm run build
+    - bin/sh node dist/main
