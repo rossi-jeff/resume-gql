@@ -3,3 +3,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/jeffross/resume-gql.jeff-rossi.com
     - /bin/cp -r * $DEPLOYPATH
+    - /bin/cd $DEPLOYPATH
+    - /bin/sh npm i
+    - /bin/sh npm run build
+    - /bin/sh npm run start
