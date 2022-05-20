@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/jeffross/resume-gql.jeff-rossi.com
+    - npm run build
+    - bin/cp -R dist/* $DEPLOYPATH
+    - bin/rm -rf dist/*
