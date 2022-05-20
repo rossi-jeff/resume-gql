@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/jeffross/public_html/resume-gql.jeff-rossi.com
+    - export DEPLOYPATH=/home/jeffross/resume-gql.jeff-rossi.com
     - bin/cp -r * $DEPLOYPATH
