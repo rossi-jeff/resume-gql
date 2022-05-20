@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "npm run build",
     "pretest": "npm run build",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "nest build --webpack",
     "deploy": "gcloud app deploy --project resume-api-274820",
     "start": "NODE_ENV=production node ./dist/main.js",
     "start:dev": "nodemon",
