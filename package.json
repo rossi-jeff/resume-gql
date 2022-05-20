@@ -10,7 +10,7 @@
     "pretest": "npm run build",
     "build": "tsc -p tsconfig.build.json",
     "deploy": "gcloud app deploy --project resume-api-274820",
-    "start": "NODE_ENV=production node ./dist/main.js",
+    "start": "NODE_ENV=production node main.js",
     "start:dev": "nodemon",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
