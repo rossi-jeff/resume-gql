@@ -39,6 +39,8 @@ ormconfig.*.json
 !ormconfig.example.json
 sendgrid.env
 /src/slack/slack.json
+ormconfig.env
+ormconfig.*.env
 
 # environment
 .env
