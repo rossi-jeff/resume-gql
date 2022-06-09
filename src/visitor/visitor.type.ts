@@ -4,8 +4,8 @@ import { ObjectType, Field } from '@nestjs/graphql';
 @ObjectType('Visitor')
 export class VisitorType extends UserType {
   @Field({ nullable: true })
-  Email: string;
+  Email?: string;
 
   @Field({ nullable: true })
-  Approved: boolean;
+  Approved?: boolean;
 }

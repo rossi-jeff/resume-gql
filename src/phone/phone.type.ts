@@ -5,11 +5,11 @@ import { PhoneTypeEnum } from '../global/enum';
 @ObjectType('Phone')
 export class PhoneType extends BaseType {
   @Field(type => PhoneTypeEnum, { nullable: true })
-  Type: PhoneTypeEnum;
+  Type?: PhoneTypeEnum;
 
   @Field({ nullable: true })
-  Number: string;
+  Number?: string;
 
   @Field({ nullable: true })
-  Extension: string;
+  Extension?: string;
 }

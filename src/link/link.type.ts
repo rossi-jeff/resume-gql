@@ -6,17 +6,17 @@ import { LinkTypeEnum } from '../global/enum';
 @ObjectType('Link')
 export class LinkType extends BaseType {
   @Field({ nullable: true })
-  Url: string;
+  Url?: string;
 
   @Field({ nullable: true })
-  Title: string;
+  Title?: string;
 
   @Field({ nullable: true })
-  Description: string;
+  Description?: string;
 
   @Field(type => LinkTypeEnum, { nullable: true })
-  Type: LinkTypeEnum;
+  Type?: LinkTypeEnum;
 
   @Field(type => [ParameterType], { nullable: true })
-  Parameters: [ParameterType];
+  Parameters?: [ParameterType];
 }

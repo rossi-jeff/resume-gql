@@ -5,11 +5,11 @@ import { NameType, CredentialsType } from '../type';
 @ObjectType()
 export class UserType extends BaseType {
   @Field(type => NameType, { nullable: true })
-  Name: NameType;
+  Name?: NameType;
 
   @Field(type => CredentialsType, { nullable: true })
-  Credentials: CredentialsType;
+  Credentials?: CredentialsType;
 
   @Field({ nullable: true })
-  UUID: string;
+  UUID?: string;
 }

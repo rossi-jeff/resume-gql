@@ -8,20 +8,20 @@ import { VisitorType } from '../visitor/visitor.type';
 @ObjectType('Comment')
 export class CommentType extends BaseType {
   @Field(type => CommentTypeEnum, { nullable: true })
-  Type: CommentTypeEnum;
+  Type?: CommentTypeEnum;
 
   @Field({ nullable: true })
-  Message: string;
+  Message?: string;
 
   @Field({ nullable: true })
-  Approved: boolean;
+  Approved?: boolean;
 
-  @Field(type => [AdminType], { nullable: true })
-  Admins: [AdminType];
+  @Field(type => [AdminType], { nullable: 'itemsAndList' })
+  Admins?: [AdminType];
 
-  @Field(type => [ReferenceType], { nullable: true })
-  References: [ReferenceType];
+  @Field(type => [ReferenceType], { nullable: 'itemsAndList' })
+  References?: [ReferenceType];
 
-  @Field(type => [VisitorType], { nullable: true })
-  Visitors: [VisitorType];
+  @Field(type => [VisitorType], { nullable: 'itemsAndList' })
+  Visitors?: [VisitorType];
 }

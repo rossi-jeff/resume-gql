@@ -4,17 +4,17 @@ import { Salutation } from '../enum';
 @ObjectType('Name')
 export class NameType {
   @Field(type => Salutation, { nullable: true })
-  Salutation: Salutation;
+  Salutation?: Salutation;
 
   @Field({ nullable: true })
-  First: string;
+  First?: string;
 
   @Field({ nullable: true })
-  Middle: string;
+  Middle?: string;
 
   @Field({ nullable: true })
-  Last: string;
+  Last?: string;
 
   @Field({ nullable: true })
-  Suffix: string;
+  Suffix?: string;
 }

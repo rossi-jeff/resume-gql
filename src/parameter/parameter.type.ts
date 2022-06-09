@@ -5,10 +5,10 @@ import { LinkType } from '../link/link.type';
 @ObjectType('Parameter')
 export class ParameterType extends BaseType {
   @Field({ nullable: true })
-  Key: string;
+  Key?: string;
 
   @Field({ nullable: true })
-  Value: string;
+  Value?: string;
 
   // @Field(type => [ LinkType ], { nullable: true })
   // Links: [ LinkType ]

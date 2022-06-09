@@ -5,20 +5,20 @@ import { MonthYearType, AddressType } from '../global/type';
 @ObjectType('Job')
 export class JobType extends BaseType {
   @Field({ nullable: true })
-  Company: string;
+  Company?: string;
 
   @Field(type => AddressType, { nullable: true })
-  Address: AddressType;
+  Address?: AddressType;
 
   @Field({ nullable: true })
-  Title: string;
+  Title?: string;
 
   @Field({ nullable: true })
-  Duties: string;
+  Duties?: string;
 
   @Field(type => MonthYearType, { nullable: true })
-  From: MonthYearType;
+  From?: MonthYearType;
 
   @Field(type => MonthYearType, { nullable: true })
-  To: MonthYearType;
+  To?: MonthYearType;
 }

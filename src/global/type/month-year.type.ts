@@ -4,7 +4,7 @@ import { MonthEnum } from '../enum';
 @ObjectType('MonthYear')
 export class MonthYearType {
   @Field(type => MonthEnum, { nullable: true })
-  Month: MonthEnum;
+  Month?: MonthEnum;
 
   @Field(type => Int)
   Year: number;

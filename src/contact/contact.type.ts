@@ -6,25 +6,25 @@ import { PhoneTypeEnum, EmailTypeEnum, PreferredContact } from '../global/enum';
 @ObjectType('Contact')
 export class ContactType extends BaseType {
   @Field(type => NameType, { nullable: true })
-  Name: NameType;
+  Name?: NameType;
 
   @Field(type => AddressType, { nullable: true })
-  Address: AddressType;
+  Address?: AddressType;
 
   @Field(type => EmailTypeEnum, { nullable: true })
-  EmailType: EmailTypeEnum;
+  EmailType?: EmailTypeEnum;
 
   @Field({ nullable: true })
-  Email: string;
+  Email?: string;
 
   @Field(type => PhoneTypeEnum, { nullable: true })
-  PhoneType: PhoneTypeEnum;
+  PhoneType?: PhoneTypeEnum;
 
   @Field({ nullable: true })
-  Phone: string;
+  Phone?: string;
 
   @Field(type => PreferredContact, { nullable: true })
-  Preferred: PreferredContact;
+  Preferred?: PreferredContact;
 
   @Field({ nullable: true })
   Subject: string;
