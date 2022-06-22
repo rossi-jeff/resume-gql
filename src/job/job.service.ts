@@ -23,6 +23,9 @@ export class JobService {
       where: {
         IsDeleted: IsDeleted || false,
       },
+      order: {
+        'From.Year': 'DESC'
+      },
       take: Limit || DefaultLimit,
       skip: Offset || 0,
     };
